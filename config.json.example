@@ -1,0 +1,13 @@
+{
+    "jellyfin": {
+        "server_url": "http://your-jellyfin-server:8096",
+        "api_key": "your-jellyfin-api-key"
+    },
+    "xtream_server": {
+        "host": "0.0.0.0",
+        "port": 8080,
+        "users": {
+            "example_user": "example_password"
+        }
+    }
+}
