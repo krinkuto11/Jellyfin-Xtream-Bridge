@@ -17,11 +17,44 @@ A middleware server that allows Xtream Codes based clients (like TiviMate) to ac
 
 ## Requirements
 
-- Python 3.7+
+- Python 3.9+ or Docker
 - Jellyfin Server (10.8+)
 - Jellyfin API Key
 
-## Installation
+## Quick Start with Docker (Recommended)
+
+The easiest way to run Jellyfin-Xtream-Server is using Docker:
+
+```bash
+# Pull the image
+docker pull ghcr.io/krinkuto11/jellyfin-xtream-server:latest
+
+# Create config directory
+mkdir -p config
+
+# Copy example config
+docker run --rm ghcr.io/krinkuto11/jellyfin-xtream-server:latest cat /config/config.json.example > config/config.json.example
+cp config/config.json.example config/config.json
+
+# Edit config with your settings
+nano config/config.json
+
+# Run with docker-compose
+docker-compose up -d
+```
+
+Or use the standalone Docker command:
+
+```bash
+docker run -d \
+  --name jellyfin-xtream-server \
+  -p 8080:8080 \
+  -v ./config:/config \
+  --restart unless-stopped \
+  ghcr.io/krinkuto11/jellyfin-xtream-server:latest
+```
+
+## Installation from Source
 
 1. Clone this repository:
 ```bash
@@ -36,10 +69,10 @@ pip install -r requirements.txt
 
 3. Create configuration file:
 ```bash
-cp config.json.example config.json
+cp config/config.json.example config/config.json
 ```
 
-4. Edit `config.json` with your settings:
+4. Edit `config/config.json` with your settings:
 ```json
 {
     "jellyfin": {
@@ -62,14 +95,22 @@ cp config.json.example config.json
 2. Go to Dashboard → API Keys
 3. Click "+" to create a new API key
 4. Give it a name (e.g., "Xtream Server")
-5. Copy the generated API key to your config.json
+5. Copy the generated API key to your config/config.json
 
 ## Usage
 
 ### Starting the Server
 
+**With Docker:**
 ```bash
-python xtream_server.py
+docker-compose up -d
+```
+
+**From source:**
+```bash
+python src/xtream_server.py
+# or use the helper script
+./start_server.sh
 ```
 
 The server will start on the configured host and port (default: `0.0.0.0:8080`).
@@ -147,11 +188,38 @@ The server implements the following Xtream Codes API endpoints:
 └─────────────────┘         └──────────────────────┘         └─────────────────┘
 ```
 
+### Project Structure
+
+```
+.
+├── .github/
+│   └── workflows/          # CI/CD workflows
+│       ├── ci.yml          # Continuous integration
+│       └── docker-publish.yml  # Docker image publishing
+├── config/
+│   ├── config.json.example # Example configuration
+│   └── config.json         # Your configuration (gitignored)
+├── docs/                   # Documentation
+│   ├── API.md             # API reference
+│   ├── ARCHITECTURE.md    # Architecture details
+│   ├── IMPLEMENTATION.md  # Implementation notes
+│   └── TROUBLESHOOTING.md # Troubleshooting guide
+├── src/                    # Source code
+│   ├── jellyfin_client.py # Jellyfin API client
+│   ├── xtream_server.py   # Main server application
+│   └── xtream_codes.py    # XC client reference
+├── tests/
+│   └── test_server.py     # Test suite
+├── Dockerfile             # Docker image definition
+├── docker-compose.yml     # Docker Compose configuration
+└── README.md              # This file
+```
+
 ### Components
 
-1. **xtream_codes.py**: Reference client implementation showing how Xtream Codes API works
-2. **jellyfin_client.py**: Client for interacting with Jellyfin API
-3. **xtream_server.py**: Main server that translates between Xtream Codes and Jellyfin APIs
+1. **src/xtream_codes.py**: Reference client implementation showing how Xtream Codes API works
+2. **src/jellyfin_client.py**: Client for interacting with Jellyfin API
+3. **src/xtream_server.py**: Main server that translates between Xtream Codes and Jellyfin APIs
 
 ## Configuration Options
 

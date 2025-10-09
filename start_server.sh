@@ -7,11 +7,11 @@ echo "Jellyfin-Xtream Server Startup"
 echo "=================================="
 
 # Check if config.json exists
-if [ ! -f "config.json" ]; then
-    echo "Error: config.json not found!"
+if [ ! -f "config/config.json" ]; then
+    echo "Error: config/config.json not found!"
     echo "Please copy config.json.example to config.json and configure it:"
-    echo "  cp config.json.example config.json"
-    echo "  nano config.json"
+    echo "  cp config/config.json.example config/config.json"
+    echo "  nano config/config.json"
     exit 1
 fi
 
@@ -29,4 +29,4 @@ if ! python3 -c "import requests, flask" 2>/dev/null; then
 fi
 
 echo "Starting Jellyfin-Xtream Server..."
-python3 xtream_server.py
+python3 src/xtream_server.py

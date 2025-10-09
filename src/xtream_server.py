@@ -6,8 +6,13 @@ to Jellyfin API calls for Movies and TV Series.
 import json
 import logging
 import os
+import sys
 from typing import Dict, List, Optional, Any
 from flask import Flask, request, Response, jsonify, send_file
+
+# Add parent directory to path for imports
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 from jellyfin_client import JellyfinClient
 
 logging.basicConfig(
@@ -22,7 +27,7 @@ app = Flask(__name__)
 class XtreamServer:
     """Xtream Codes API Server backed by Jellyfin"""
 
-    def __init__(self, config_path: str = 'config.json'):
+    def __init__(self, config_path: str = 'config/config.json'):
         """
         Initialize Xtream Server.
         
@@ -48,11 +53,26 @@ class XtreamServer:
         Returns:
         Dict: Configuration dictionary
         """
-        if not os.path.exists(config_path):
+        # Try multiple possible config paths
+        possible_paths = [
+            config_path,
+            os.path.join(os.path.dirname(__file__), '..', config_path),
+            '/config/config.json'  # Docker volume mount
+        ]
+        
+        config_found = None
+        for path in possible_paths:
+            if os.path.exists(path):
+                config_found = path
+                break
+        
+        if not config_found:
             raise FileNotFoundError(
-                f"Config file not found: {config_path}. "
-                f"Copy config.json.example to config.json and configure it."
+                f"Config file not found. Tried: {possible_paths}. "
+                f"Copy config/config.json.example to config/config.json and configure it."
             )
+        
+        config_path = config_found
         
         with open(config_path, 'r') as f:
             return json.load(f)

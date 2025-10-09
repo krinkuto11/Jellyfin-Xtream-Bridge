@@ -15,7 +15,7 @@ Default: `http://localhost:8080/`
 ## Authentication
 
 All requests require username and password parameters:
-- `username`: Configured in config.json
+- `username`: Configured in config/config.json
 - `password`: Corresponding password
 
 ## Streaming Support

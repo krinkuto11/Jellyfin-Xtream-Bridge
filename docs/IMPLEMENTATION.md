@@ -11,7 +11,7 @@ API, focusing specifically on Movies (VOD) and TV Series content.
 
 ### Core Components
 
-#### 1. Jellyfin Client (`jellyfin_client.py`)
+#### 1. Jellyfin Client (`src/jellyfin_client.py`)
 A Python client for interacting with the Jellyfin API:
 - User management
 - Library browsing (movies and series)
@@ -26,7 +26,7 @@ A Python client for interacting with the Jellyfin API:
 - Connection pooling via requests.Session
 - Context manager support (with statement)
 
-#### 2. Xtream Server (`xtream_server.py`)
+#### 2. Xtream Server (`src/xtream_server.py`)
 The main server application implementing the Xtream Codes API:
 - Flask-based HTTP server
 - Authentication system
@@ -46,7 +46,7 @@ The main server application implementing the Xtream Codes API:
 - `GET /movie/{user}/{pass}/{id}.{ext}` - Stream movie
 - `GET /series/{user}/{pass}/{id}.{ext}` - Stream episode
 
-#### 3. Test Suite (`test_server.py`)
+#### 3. Test Suite (`tests/test_server.py`)
 Comprehensive testing script to validate functionality:
 - Authentication testing
 - VOD category retrieval
@@ -60,7 +60,7 @@ Comprehensive testing script to validate functionality:
 ### Supporting Files
 
 #### Configuration
-- **config.json.example**: Template configuration file
+- **config/config/config.json.example**: Template configuration file
   - Jellyfin server URL and API key
   - Xtream server settings (host, port)
   - User credentials
@@ -69,7 +69,7 @@ Comprehensive testing script to validate functionality:
 
 #### Scripts
 - **start_server.sh**: Convenience script to start the server
-  - Checks for config.json
+  - Checks for config/config.json
   - Verifies dependencies
   - Starts the server
 
@@ -185,7 +185,7 @@ All code follows the conventions in `python.instructions.md`:
 ## Testing Strategy
 
 ### Manual Testing
-The test_server.py script provides comprehensive manual testing:
+The tests/test_server.py script provides comprehensive manual testing:
 - Tests all major endpoints
 - Validates data format
 - Checks error handling
@@ -208,7 +208,7 @@ Compatible with real Xtream clients:
 
 ### Development
 ```bash
-python3 xtream_server.py
+python3 src/xtream_server.py
 ```
 - Uses Flask's built-in server
 - Good for testing and development
@@ -312,13 +312,13 @@ Internet
 ├── ARCHITECTURE.md             # Technical architecture
 ├── TROUBLESHOOTING.md          # Problem resolution
 ├── IMPLEMENTATION.md           # This file
-├── config.json.example         # Configuration template
+├── config/config/config.json.example         # Configuration template
 ├── requirements.txt            # Python dependencies
 ├── start_server.sh             # Start script
-├── jellyfin_client.py          # Jellyfin API client
-├── xtream_server.py            # Main server application
-├── test_server.py              # Test suite
-├── xtream_codes.py             # Reference client (provided)
+├── src/jellyfin_client.py          # Jellyfin API client
+├── src/xtream_server.py            # Main server application
+├── tests/test_server.py              # Test suite
+├── src/xtream_codes.py             # Reference client (provided)
 ├── python.instructions.md      # Coding guidelines (provided)
 └── jellyfin-openapi-stable.json # Jellyfin API spec (provided)
 ```

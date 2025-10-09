@@ -14,14 +14,14 @@
 │                   Jellyfin-Xtream-Server                        │
 │                         (This Middleware)                        │
 │  ┌────────────────────────────────────────────────────────┐    │
-│  │              xtream_server.py (Flask)                  │    │
+│  │              src/xtream_server.py (Flask)                  │    │
 │  │  - Authentication                                      │    │
 │  │  - API Endpoint Handlers                               │    │
 │  │  - Format Translation                                  │    │
 │  └──────────────────────┬─────────────────────────────────┘    │
 │                         │                                       │
 │  ┌──────────────────────▼─────────────────────────────────┐    │
-│  │           jellyfin_client.py                           │    │
+│  │           src/jellyfin_client.py                           │    │
 │  │  - Jellyfin API Client                                 │    │
 │  │  - Library Management                                  │    │
 │  │  - Item Queries                                        │    │
@@ -49,7 +49,7 @@ Client                  Xtream Server           Jellyfin Server
   │ ?username=X&password=Y    │                        │
   ├──────────────────────────►│                        │
   │                           │ Validate credentials   │
-  │                           │ (config.json)          │
+  │                           │ (config/config.json)          │
   │                           │                        │
   │                           │ GET /Users             │
   │                           ├───────────────────────►│
@@ -195,7 +195,7 @@ The middleware consumes Jellyfin's API format:
 ## Authentication
 
 ### Client Authentication
-- Username/password defined in `config.json`
+- Username/password defined in `config/config.json`
 - Simple dictionary lookup (not database)
 - Suitable for personal use
 

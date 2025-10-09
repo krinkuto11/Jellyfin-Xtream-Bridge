@@ -1,0 +1,48 @@
+# Git files
+.git
+.gitignore
+.github
+
+# Python cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info
+dist
+build
+
+# Virtual environments
+venv
+env
+ENV
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Test files
+tests/
+test_*.py
+
+# Config (will be mounted as volume)
+config/config.json
+
+# Context files (not needed in container)
+context/
+
+# Temporary files
+*.log
+.DS_Store
+Thumbs.db
