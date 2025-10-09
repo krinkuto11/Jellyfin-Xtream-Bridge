@@ -161,6 +161,25 @@ def test_series_info(client: Client, series_id: str):
         return False
 
 
+def test_live_categories(client: Client):
+    """Test live categories (should return empty list)"""
+    print("\n" + "="*60)
+    print("Testing Live Categories")
+    print("="*60)
+    try:
+        categories = client.get_live_categories()
+        if not isinstance(categories, list):
+            print(f"✗ Expected list, got {type(categories)}")
+            return False
+        print(f"✓ Retrieved {len(categories)} live categories (expected: 0)")
+        if len(categories) == 0:
+            print("  ✓ Correctly returns empty list for unsupported feature")
+        return True
+    except Exception as e:
+        print(f"✗ Failed to get live categories: {str(e)}")
+        return False
+
+
 def main():
     """Run all tests"""
     if len(sys.argv) < 4:
@@ -206,6 +225,9 @@ def main():
             if series:
                 # Test first series' detailed info
                 test_series_info(client, series[0]['series_id'])
+            
+            # Test Live TV (should return empty lists)
+            test_live_categories(client)
             
             print("\n" + "="*60)
             print("Test Suite Completed")

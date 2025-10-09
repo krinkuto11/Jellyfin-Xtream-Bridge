@@ -177,6 +177,12 @@ The server implements the following Xtream Codes API endpoints:
 - `GET /series/username/password/stream_id.mp4` - Stream an episode (direct)
 - `GET /series/username/password/stream_id.m3u8` - Stream an episode (HLS, recommended)
 
+### Live TV (Compatibility)
+- `GET /player_api.php?username=X&password=Y&action=get_live_categories` - Returns empty list (live TV not supported)
+- `GET /player_api.php?username=X&password=Y&action=get_live_streams` - Returns empty list (live TV not supported)
+
+**Note**: Live TV endpoints return empty lists for compatibility with Xtream Codes clients that expect these endpoints to exist.
+
 ## Architecture
 
 ```

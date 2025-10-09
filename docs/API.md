@@ -452,6 +452,58 @@ GET /series/user/pass/episode-id-1.m3u8  # HLS streaming (recommended)
 
 ---
 
+### 10. Get Live Categories (Not Supported)
+
+Get list of live TV categories. Returns empty list as live TV is not supported.
+
+**Endpoint**: `GET /player_api.php`
+
+**Parameters**:
+- `username` (required): Username
+- `password` (required): Password
+- `action` (required): `get_live_categories`
+
+**Example**:
+```
+GET /player_api.php?username=user&password=pass&action=get_live_categories
+```
+
+**Response**:
+```json
+[]
+```
+
+**Note**: This endpoint returns an empty list because live TV functionality is not supported. It exists for compatibility with Xtream Codes clients that expect this endpoint to be available.
+
+---
+
+### 11. Get Live Streams (Not Supported)
+
+Get list of live TV streams. Returns empty list as live TV is not supported.
+
+**Endpoint**: `GET /player_api.php`
+
+**Parameters**:
+- `username` (required): Username
+- `password` (required): Password
+- `action` (required): `get_live_streams`
+- `category_id` (optional): Category ID (ignored)
+
+**Example**:
+```
+GET /player_api.php?username=user&password=pass&action=get_live_streams
+GET /player_api.php?username=user&password=pass&action=get_live_streams&category_id=123
+```
+
+**Response**:
+```json
+[]
+```
+
+**Note**: This endpoint returns an empty list because live TV functionality is not supported. It exists for compatibility with Xtream Codes clients that expect this endpoint to be available.
+
+---
+
 ## Error Responses
 
 ### 401 Unauthorized
