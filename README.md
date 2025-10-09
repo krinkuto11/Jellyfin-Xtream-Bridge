@@ -7,6 +7,8 @@ A middleware server that allows Xtream Codes based clients (like TiviMate) to ac
 - **Xtream Codes API Compatible**: Implements the Xtream Codes API protocol
 - **Movies (VOD) Support**: Browse and stream movies from Jellyfin
 - **TV Series Support**: Browse series, seasons, and episodes
+- **HLS Streaming**: Adaptive bitrate streaming for better compatibility
+- **Direct Streaming**: Support for direct file streaming
 - **Automatic Transcoding**: Leverages Jellyfin's streaming capabilities
 - **Category Support**: Maps Jellyfin libraries to Xtream categories
 - **Metadata**: Provides rich metadata (descriptions, ratings, artwork)
@@ -82,6 +84,37 @@ Configure your client app (e.g., TiviMate) with these settings:
 
 The client will now see your Jellyfin movies and series as if they were on an Xtream Codes IPTV service.
 
+## Streaming Options
+
+The server supports two streaming modes:
+
+### HLS Streaming (Recommended)
+Use `.m3u8` extension for adaptive bitrate streaming:
+- Better compatibility with Xtream Codes clients
+- Automatic quality adjustment based on bandwidth
+- Works better over internet connections
+- Supports transcoding when needed
+
+Example:
+```
+http://your-server:8080/movie/user/pass/movie-id.m3u8
+http://your-server:8080/series/user/pass/episode-id.m3u8
+```
+
+### Direct Streaming
+Use original container extension (`.mp4`, `.mkv`, etc.):
+- Best for local networks with high bandwidth
+- No transcoding overhead
+- Lower server CPU usage
+
+Example:
+```
+http://your-server:8080/movie/user/pass/movie-id.mp4
+http://your-server:8080/series/user/pass/episode-id.mkv
+```
+
+**Recommendation**: Use HLS (`.m3u8`) for the best compatibility with Xtream Codes clients, especially when streaming over the internet.
+
 ## API Endpoints
 
 The server implements the following Xtream Codes API endpoints:
@@ -93,13 +126,15 @@ The server implements the following Xtream Codes API endpoints:
 - `GET /player_api.php?username=X&password=Y&action=get_vod_categories` - Get movie categories
 - `GET /player_api.php?username=X&password=Y&action=get_vod_streams&category_id=Z` - Get movies in category
 - `GET /player_api.php?username=X&password=Y&action=get_vod_info&vod_id=Z` - Get movie details
-- `GET /movie/username/password/stream_id.mp4` - Stream a movie
+- `GET /movie/username/password/stream_id.mp4` - Stream a movie (direct)
+- `GET /movie/username/password/stream_id.m3u8` - Stream a movie (HLS, recommended)
 
 ### Series
 - `GET /player_api.php?username=X&password=Y&action=get_series_categories` - Get series categories
 - `GET /player_api.php?username=X&password=Y&action=get_series&category_id=Z` - Get series in category
 - `GET /player_api.php?username=X&password=Y&action=get_series_info&series_id=Z` - Get series details with episodes
-- `GET /series/username/password/stream_id.mp4` - Stream an episode
+- `GET /series/username/password/stream_id.mp4` - Stream an episode (direct)
+- `GET /series/username/password/stream_id.m3u8` - Stream an episode (HLS, recommended)
 
 ## Architecture
 
