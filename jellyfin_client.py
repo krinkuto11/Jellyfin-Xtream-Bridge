@@ -271,7 +271,7 @@ class JellyfinClient:
         container: str = 'mp4'
     ) -> str:
         """
-        Get the stream URL for a media item.
+        Get the direct stream URL for a media item.
         
         Parameters:
         item_id (str): Item ID
@@ -283,6 +283,45 @@ class JellyfinClient:
         return (
             f"{self.server_url}/Videos/{item_id}/stream.{container}"
             f"?api_key={self.api_key}&Static=true"
+        )
+
+    def get_hls_stream_url(
+        self,
+        item_id: str,
+        max_streaming_bitrate: int = 120000000,
+        video_codec: str = 'h264,hevc',
+        audio_codec: str = 'aac,mp3,ac3,eac3'
+    ) -> str:
+        """
+        Get the HLS streaming URL for a media item.
+        HLS (HTTP Live Streaming) provides better compatibility with
+        Xtream Codes clients and supports adaptive bitrate streaming.
+        
+        Parameters:
+        item_id (str): Item ID
+        max_streaming_bitrate (int): Maximum bitrate (default: 120Mbps)
+        video_codec (str): Allowed video codecs
+        audio_codec (str): Allowed audio codecs
+        
+        Returns:
+        str: HLS master playlist URL
+        """
+        params = [
+            f"api_key={self.api_key}",
+            f"MaxStreamingBitrate={max_streaming_bitrate}",
+            f"VideoCodec={video_codec}",
+            f"AudioCodec={audio_codec}",
+            "TranscodingMaxAudioChannels=2",
+            "RequireAvc=false",
+            "SegmentContainer=ts",
+            "BreakOnNonKeyFrames=true",
+            "h264-profile=high,main,baseline,constrainedbaseline",
+            "h264-level=51",
+            "TranscodeReasons=",
+        ]
+        return (
+            f"{self.server_url}/Videos/{item_id}/master.m3u8"
+            f"?{'&'.join(params)}"
         )
 
     def close(self):

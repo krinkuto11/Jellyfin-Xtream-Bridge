@@ -720,11 +720,16 @@ def stream_movie(username, password, stream_id, container):
     """
     Stream a movie/VOD.
     Redirects to Jellyfin stream URL.
+    Uses HLS for m3u8 requests, direct streaming for other containers.
     """
     if not server.authenticate(username, password):
         return jsonify({'error': 'Invalid credentials'}), 401
 
-    stream_url = server.jellyfin.get_stream_url(stream_id, container)
+    # Use HLS streaming for m3u8 requests for better XC client compatibility
+    if container == 'm3u8':
+        stream_url = server.jellyfin.get_hls_stream_url(stream_id)
+    else:
+        stream_url = server.jellyfin.get_stream_url(stream_id, container)
     return Response(status=302, headers={'Location': stream_url})
 
 
@@ -733,11 +738,16 @@ def stream_episode(username, password, stream_id, container):
     """
     Stream an episode.
     Redirects to Jellyfin stream URL.
+    Uses HLS for m3u8 requests, direct streaming for other containers.
     """
     if not server.authenticate(username, password):
         return jsonify({'error': 'Invalid credentials'}), 401
 
-    stream_url = server.jellyfin.get_stream_url(stream_id, container)
+    # Use HLS streaming for m3u8 requests for better XC client compatibility
+    if container == 'm3u8':
+        stream_url = server.jellyfin.get_hls_stream_url(stream_id)
+    else:
+        stream_url = server.jellyfin.get_stream_url(stream_id, container)
     return Response(status=302, headers={'Location': stream_url})
 
 
