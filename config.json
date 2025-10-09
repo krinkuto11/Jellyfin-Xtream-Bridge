@@ -1,0 +1,13 @@
+{
+    "jellyfin": {
+        "server_url": "https://jellyfin.eguzkilore.eu:443",
+        "api_key": "9b36879860064e1185827d9d4ab124a1"
+    },
+    "xtream_server": {
+        "host": "0.0.0.0",
+        "port": 8080,
+        "users": {
+            "X": "Y"
+        }
+    }
+}
