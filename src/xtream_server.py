@@ -732,6 +732,14 @@ def player_api():
             return jsonify({'error': 'Missing series_id'}), 400
         return jsonify(server.get_series_info(series_id))
 
+    if action == 'get_live_categories':
+        # Return empty list - live TV not supported but clients expect valid response
+        return jsonify([])
+
+    if action == 'get_live_streams':
+        # Return empty list - live TV not supported but clients expect valid response
+        return jsonify([])
+
     return jsonify({'error': f'Unknown action: {action}'}), 400
 
 
