@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  jellyfin-xtream-server:
+    image: ghcr.io/krinkuto11/jellyfin-xtream-server:latest
+    container_name: jellyfin-xtream-server
+    restart: unless-stopped
+    
+    # Build configuration (for local development)
+    build:
+      context: .
+      dockerfile: Dockerfile
+    
+    ports:
+      - "8080:8080"
+    
+    volumes:
+      # Mount config directory
+      - ./config:/config:rw
+      
+      # Optional: Mount logs directory
+      # - ./logs:/app/logs:rw
+    
+    environment:
+      # Python configuration
+      - PYTHONUNBUFFERED=1
+      
+      # Optional: Set timezone
+      - TZ=UTC
+      
+      # Optional: Set log level
+      # - LOG_LEVEL=INFO
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8080/player_api.php', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    
+    # Resource limits (optional)
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '1.0'
+    #       memory: 512M
+    #     reservations:
+    #       cpus: '0.25'
+    #       memory: 128M
+    
+    # Network mode (optional)
+    # network_mode: host
+    
+    # Logging configuration (optional)
+    # logging:
+    #   driver: "json-file"
+    #   options:
+    #     max-size: "10m"
+    #     max-file: "3"
+
+networks:
+  default:
+    name: jellyfin-xtream-network

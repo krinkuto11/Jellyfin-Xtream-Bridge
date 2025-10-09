@@ -42,6 +42,7 @@ Thumbs.db
 # Config files with sensitive data
 config.ini
 *.local.json
+config/config.json
 
 # Test coverage
 .coverage

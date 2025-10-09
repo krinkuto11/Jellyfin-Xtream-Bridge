@@ -15,8 +15,28 @@ Default: `http://localhost:8080/`
 ## Authentication
 
 All requests require username and password parameters:
-- `username`: Configured in config.json
+- `username`: Configured in config/config.json
 - `password`: Corresponding password
+
+## Streaming Support
+
+The server supports both direct file streaming and HLS (HTTP Live Streaming):
+
+- **Direct Streaming**: Use original container extension (mp4, mkv, etc.)
+  - Best for local networks with high bandwidth
+  - No transcoding overhead
+  
+- **HLS Streaming** (Recommended): Use `.m3u8` extension
+  - Better compatibility with Xtream Codes clients
+  - Adaptive bitrate streaming
+  - Works better over internet connections
+  - Automatic transcoding when needed
+
+Example:
+```
+/movie/user/pass/{id}.mp4   # Direct streaming
+/movie/user/pass/{id}.m3u8  # HLS streaming (recommended)
+```
 
 ## Endpoints
 
@@ -392,16 +412,18 @@ Stream a movie file.
 - `username` (path): Username
 - `password` (path): Password
 - `stream_id` (path): Movie ID (from VOD streams)
-- `container` (path): Container extension (mp4, mkv, etc.)
+- `container` (path): Container extension (mp4, mkv, m3u8, etc.)
 
 **Example**:
 ```
 GET /movie/user/pass/jellyfin-id-123.mp4
+GET /movie/user/pass/jellyfin-id-123.m3u8  # HLS streaming (recommended)
 ```
 
 **Response**:
 - HTTP 302 Redirect to Jellyfin stream URL
 - Client follows redirect to actual video stream
+- For m3u8 requests, redirects to HLS master playlist for adaptive streaming
 
 ---
 
@@ -415,16 +437,18 @@ Stream an episode file.
 - `username` (path): Username
 - `password` (path): Password
 - `stream_id` (path): Episode ID (from series info)
-- `container` (path): Container extension (mp4, mkv, etc.)
+- `container` (path): Container extension (mp4, mkv, m3u8, etc.)
 
 **Example**:
 ```
 GET /series/user/pass/episode-id-1.mp4
+GET /series/user/pass/episode-id-1.m3u8  # HLS streaming (recommended)
 ```
 
 **Response**:
 - HTTP 302 Redirect to Jellyfin stream URL
 - Client follows redirect to actual video stream
+- For m3u8 requests, redirects to HLS master playlist for adaptive streaming
 
 ---
 

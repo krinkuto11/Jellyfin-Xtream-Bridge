@@ -3,7 +3,12 @@ Test script for Jellyfin-Xtream Server.
 This script demonstrates how to test the server using the Xtream client.
 """
 import sys
+import os
 import logging
+
+# Add src directory to path for imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+
 from xtream_codes import Client
 
 logging.basicConfig(

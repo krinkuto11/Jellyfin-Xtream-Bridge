@@ -6,12 +6,12 @@ This guide helps resolve common issues with Jellyfin-Xtream-Server.
 
 ### Error: "Config file not found"
 
-**Problem**: config.json doesn't exist
+**Problem**: config/config.json doesn't exist
 
 **Solution**:
 ```bash
-cp config.json.example config.json
-nano config.json  # Edit with your settings
+cp config/config/config.json.example config/config.json
+nano config/config.json  # Edit with your settings
 ```
 
 ### Error: "No module named 'flask'"
@@ -30,7 +30,7 @@ pip3 install -r requirements.txt
 **Problem**: Port 8080 is already taken
 
 **Solutions**:
-1. Change port in config.json
+1. Change port in config/config.json
 2. Stop the other process using port 8080:
 ```bash
 # Linux/Mac - Find process
@@ -51,7 +51,7 @@ taskkill /PID <PID> /F
 ```bash
 # Should show output like:
 # * Running on http://0.0.0.0:8080/
-ps aux | grep xtream_server.py
+ps aux | grep src/xtream_server.py
 ```
 
 **Check 2**: Network access
@@ -84,7 +84,7 @@ curl http://jellyfin-server:8096/System/Info
 
 **Check 2**: API key is valid
 - Go to Jellyfin Dashboard → API Keys
-- Verify the key matches config.json
+- Verify the key matches config/config.json
 - Create new key if needed
 
 **Check 3**: Network connectivity
@@ -104,7 +104,7 @@ nc -zv jellyfin-server 8096
 
 **Problem 1**: Wrong username/password in client
 
-**Solution**: Check config.json users section:
+**Solution**: Check config/config.json users section:
 ```json
 {
   "xtream_server": {
@@ -117,7 +117,7 @@ nc -zv jellyfin-server 8096
 
 **Problem 2**: Config not reloaded after change
 
-**Solution**: Restart the server after changing config.json
+**Solution**: Restart the server after changing config/config.json
 
 ### Error: "Authentication failed: Invalid response from server"
 
@@ -127,7 +127,7 @@ nc -zv jellyfin-server 8096
 1. Log into Jellyfin Dashboard
 2. Go to API Keys section
 3. Delete old key and create new one
-4. Update config.json with new key
+4. Update config/config.json with new key
 5. Restart Xtream server
 
 ## No Content Showing
@@ -145,7 +145,7 @@ Log into Jellyfin web interface and verify:
 
 Start server and look for errors:
 ```bash
-python3 xtream_server.py
+python3 src/xtream_server.py
 # Look for ERROR messages
 ```
 
@@ -307,7 +307,7 @@ curl -L "http://localhost:8080/movie/USER/PASS/STREAM_ID.mp4" > /dev/null
 
 ### Enable Debug Logging
 
-Edit xtream_server.py:
+Edit src/xtream_server.py:
 ```python
 # Change this line:
 logging.basicConfig(level=logging.INFO, ...)
@@ -334,10 +334,10 @@ curl "http://localhost:8080/player_api.php?username=USER&password=PASS&action=ge
 
 Use the included test script:
 ```bash
-python3 test_server.py http://localhost:8080 USER PASS
+python3 tests/test_server.py http://localhost:8080 USER PASS
 ```
 
-Or use the xtream_codes.py client directly:
+Or use the src/xtream_codes.py client directly:
 ```python
 from xtream_codes import Client
 
@@ -351,7 +351,7 @@ print(client.get_vod_streams())
 
 Watch logs in real-time:
 ```bash
-python3 xtream_server.py 2>&1 | tee server.log
+python3 src/xtream_server.py 2>&1 | tee server.log
 ```
 
 ### Check Jellyfin API Directly
