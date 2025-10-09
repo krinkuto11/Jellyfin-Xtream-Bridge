@@ -1,4 +1,7 @@
 name: Docker Build and Publish
+permissions:
+  id-token: write
+  contents: read
 
 on:
   push:
