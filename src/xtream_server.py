@@ -229,24 +229,7 @@ class XtreamServer:
                     'category_id': category_id or '0',
                     'container_extension': container,
                     'custom_sid': '',
-                    'direct_source': '',
-                    'plot': movie.get('Overview', ''),
-                    'cast': ', '.join(
-                        movie.get('People', [])
-                    ) if movie.get('People') else '',
-                    'director': ', '.join(
-                        movie.get('People', [])
-                    ) if movie.get('People') else '',
-                    'genre': ', '.join(movie.get('Genres', [])),
-                    'releaseDate': movie.get('PremiereDate', ''),
-                    'last_modified': self._parse_date(
-                        movie.get('PremiereDate', '')
-                    ),
-                    'backdrop_path': [self._get_image_url(movie, 'Backdrop')],
-                    'youtube_trailer': '',
-                    'episode_run_time': str(
-                        movie.get('RunTimeTicks', 0) // 10000000 // 60
-                    )
+                    'direct_source': ''
                 })
             
             return streams
