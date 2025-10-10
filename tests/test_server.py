@@ -63,6 +63,8 @@ def test_vod_streams(client: Client, category_id: str = None):
             print(f"  - {stream['name']}")
             print(f"    ID: {stream['stream_id']}")
             print(f"    Rating: {stream.get('rating', 0)}")
+            print(f"    Plot: {stream.get('plot', 'N/A')[:50]}...")
+            print(f"    Genre: {stream.get('genre', 'N/A')}")
         return streams
     except Exception as e:
         print(f"✗ Failed to get VOD streams: {str(e)}")

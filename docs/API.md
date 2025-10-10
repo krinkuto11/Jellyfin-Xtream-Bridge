@@ -153,7 +153,16 @@ GET /player_api.php?username=user&password=pass&action=get_vod_streams&category_
     "category_id": "abc123",
     "container_extension": "mp4",
     "custom_sid": "",
-    "direct_source": ""
+    "direct_source": "",
+    "plot": "Movie description...",
+    "cast": "Actor1, Actor2",
+    "director": "Director Name",
+    "genre": "Action, Drama",
+    "releaseDate": "2023-01-01",
+    "last_modified": "1609459200",
+    "backdrop_path": ["http://server/backdrop.jpg"],
+    "youtube_trailer": "",
+    "episode_run_time": "120"
   }
 ]
 ```
@@ -169,6 +178,15 @@ GET /player_api.php?username=user&password=pass&action=get_vod_streams&category_
 - `added`: Unix timestamp of premiere date
 - `category_id`: Category this movie belongs to
 - `container_extension`: File extension (mp4, mkv, etc.)
+- `plot`: Movie description/plot
+- `cast`: Cast members
+- `director`: Director name
+- `genre`: Movie genres
+- `releaseDate`: Release date
+- `last_modified`: Unix timestamp of last modification
+- `backdrop_path`: Array with backdrop image URLs
+- `youtube_trailer`: Trailer URL (empty if not available)
+- `episode_run_time`: Runtime in minutes
 
 ---
 
