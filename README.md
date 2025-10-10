@@ -1,4 +1,4 @@
-# Jellyfin-Xtream-Server
+# Jellyfin-Xtream-Bridge
 
 A middleware server that allows Xtream Codes based clients (like TiviMate) to access a Jellyfin library. This enables apps designed for IPTV services to browse and play Movies and TV Series from your Jellyfin server.
 
