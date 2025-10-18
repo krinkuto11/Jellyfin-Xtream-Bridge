@@ -27,13 +27,13 @@ The easiest way to run Jellyfin-Xtream-Server is using Docker:
 
 ```bash
 # Pull the image
-docker pull ghcr.io/krinkuto11/jellyfin-xtream-server:latest
+docker pull ghcr.io/krinkuto11/jellyfin-xtream-bridge:latest
 
 # Create config directory
 mkdir -p config
 
 # Copy example config
-docker run --rm ghcr.io/krinkuto11/jellyfin-xtream-server:latest cat /config/config.json.example > config/config.json.example
+docker run --rm ghcr.io/krinkuto11/jellyfin-xtream-bridge:latest cat /config/config.json.example > config/config.json.example
 cp config/config.json.example config/config.json
 
 # Edit config with your settings
@@ -47,18 +47,18 @@ Or use the standalone Docker command:
 
 ```bash
 docker run -d \
-  --name jellyfin-xtream-server \
+  --name jellyfin-xtream-bridge \
   -p 8080:8080 \
   -v ./config:/config \
   --restart unless-stopped \
-  ghcr.io/krinkuto11/jellyfin-xtream-server:latest
+  ghcr.io/krinkuto11/jellyfin-xtream-bridge:latest
 ```
 
 ## Installation from Source
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/krinkuto11/Jellyfin-Xtream-Server.git
+git clone https://github.com/krinkuto11/Jellyfin-Xtream-Bridge.git
 cd Jellyfin-Xtream-Server
 ```
 
