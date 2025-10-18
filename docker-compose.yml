@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   jellyfin-xtream-server:
-    image: ghcr.io/krinkuto11/jellyfin-xtream-server:latest
-    container_name: jellyfin-xtream-server
+    image: ghcr.io/krinkuto11/jellyfin-xtream-bridge:latest
+    container_name: jellyfin-xtream-bridge
     restart: unless-stopped
     
     # Build configuration (for local development)
