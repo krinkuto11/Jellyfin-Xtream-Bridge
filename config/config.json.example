@@ -8,6 +8,10 @@
         "port": 8080,
         "users": {
             "example_user": "example_password"
+        },
+        "library_filter": {
+            "movies": [],
+            "series": []
         }
     }
 }

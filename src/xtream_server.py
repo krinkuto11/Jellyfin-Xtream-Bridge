@@ -40,6 +40,13 @@ class XtreamServer:
             self.config['jellyfin']['api_key']
         )
         self.users = self.config['xtream_server']['users']
+        library_filter = self.config['xtream_server'].get('library_filter', {})
+        self.movie_library_filter = [
+            n.lower() for n in library_filter.get('movies', [])
+        ]
+        self.series_library_filter = [
+            n.lower() for n in library_filter.get('series', [])
+        ]
         self.jellyfin_user_id = None
         self._init_jellyfin_user()
 
@@ -164,6 +171,12 @@ class XtreamServer:
             libraries = self.jellyfin.get_movie_libraries(
                 self.jellyfin_user_id
             )
+            if self.movie_library_filter:
+                libraries = [
+                    lib for lib in libraries
+                    if lib.get('Name', '').lower() in self.movie_library_filter
+                    or lib.get('Id', '') in self.movie_library_filter
+                ]
             categories = []
             for lib in libraries:
                 categories.append({
@@ -331,6 +344,12 @@ class XtreamServer:
             libraries = self.jellyfin.get_series_libraries(
                 self.jellyfin_user_id
             )
+            if self.series_library_filter:
+                libraries = [
+                    lib for lib in libraries
+                    if lib.get('Name', '').lower() in self.series_library_filter
+                    or lib.get('Id', '') in self.series_library_filter
+                ]
             categories = []
             for lib in libraries:
                 categories.append({
