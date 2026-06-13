@@ -10,8 +10,8 @@
             "example_user": "example_password"
         },
         "library_filter": {
-            "movies": [],
-            "series": []
+            "movies": null,
+            "series": null
         }
     }
 }
