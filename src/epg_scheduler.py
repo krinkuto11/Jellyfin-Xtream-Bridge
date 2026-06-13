@@ -102,6 +102,7 @@ def start_scheduler(config: dict) -> Optional[BackgroundScheduler]:
     """
     epg_cfg = config.get('xtream_server', {}).get('epg_sync')
     if not epg_cfg:
+        logger.info("epg_sync not configured — EPG poster sync disabled")
         return None
 
     epg_url = epg_cfg.get('url', '').strip()
