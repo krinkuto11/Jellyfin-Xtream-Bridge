@@ -213,7 +213,9 @@ class JellyfinClient:
         Dict: Series information with episodes
         """
         # Get series details
-        series = self._make_request(f'Users/{user_id}/Items/{series_id}')
+        series = self._make_request(
+            f'Items/{series_id}', {'userId': user_id}
+        )
         
         # Get seasons
         seasons_response = self._make_request(
@@ -263,7 +265,7 @@ class JellyfinClient:
         Returns:
         Dict: Item details
         """
-        return self._make_request(f'Users/{user_id}/Items/{item_id}')
+        return self._make_request(f'Items/{item_id}', {'userId': user_id})
 
     def get_stream_url(
         self,
@@ -308,16 +310,16 @@ class JellyfinClient:
         """
         params = [
             f"api_key={self.api_key}",
-            f"MaxStreamingBitrate={max_streaming_bitrate}",
-            f"VideoCodec={video_codec}",
-            f"AudioCodec={audio_codec}",
-            "TranscodingMaxAudioChannels=2",
-            "RequireAvc=false",
-            "SegmentContainer=ts",
-            "BreakOnNonKeyFrames=true",
-            "h264-profile=high,main,baseline,constrainedbaseline",
-            "h264-level=51",
-            "TranscodeReasons=",
+            f"videoBitRate={max_streaming_bitrate}",
+            f"videoCodec={video_codec}",
+            f"audioCodec={audio_codec}",
+            "transcodingMaxAudioChannels=2",
+            "requireAvc=false",
+            "segmentContainer=ts",
+            "breakOnNonKeyFrames=true",
+            "streamOptions[h264-profile]=high,main,baseline,constrainedbaseline",
+            "streamOptions[h264-level]=51",
+            "transcodeReasons=",
         ]
         return (
             f"{self.server_url}/Videos/{item_id}/master.m3u8"
