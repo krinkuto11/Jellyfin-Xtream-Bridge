@@ -845,6 +845,12 @@ def main():
     host = s.config['xtream_server']['host']
     port = s.config['xtream_server']['port']
 
+    try:
+        from epg_scheduler import start_scheduler
+        start_scheduler(s.config)
+    except Exception as e:
+        logger.warning(f"EPG scheduler not started: {e}")
+
     logger.info(f"Starting Xtream Codes Server on {host}:{port}")
     logger.info("Jellyfin-Xtream Server is ready")
 

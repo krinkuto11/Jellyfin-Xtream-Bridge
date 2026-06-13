@@ -12,6 +12,11 @@
         "library_filter": {
             "movies": null,
             "series": null
+        },
+        "epg_sync": {
+            "url": "https://example.com/guiatv_light.xml.gz",
+            "library": "Deportes",
+            "cron": "0 6 * * *"
         }
     }
 }
