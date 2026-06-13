@@ -115,15 +115,23 @@ class JellyfinSync:
         return items.get('Items', [])
 
     def set_image(self, item_id: str, image_url: str) -> bool:
+        # Ask Jellyfin to fetch the image directly from the URL
+        try:
+            r = self.session.post(
+                f"{self.server_url}/Items/{item_id}/RemoteImages/Download",
+                params={'type': 'Primary', 'imageUrl': image_url},
+                timeout=30,
+            )
+            r.raise_for_status()
+            return True
+        except Exception as e:
+            logger.warning(f"  RemoteImages/Download failed ({e}), falling back to direct upload")
+
+        # Fallback: download locally and POST the binary
         try:
             img_r = requests.get(image_url, timeout=15)
             img_r.raise_for_status()
-        except Exception as e:
-            logger.warning(f"  Image download failed: {e}")
-            return False
-
-        content_type = img_r.headers.get('Content-Type', 'image/jpeg').split(';')[0].strip()
-        try:
+            content_type = img_r.headers.get('Content-Type', 'image/jpeg').split(';')[0].strip()
             r = self.session.post(
                 f"{self.server_url}/Items/{item_id}/Images/Primary",
                 data=img_r.content,
