@@ -217,11 +217,26 @@ class XtreamServer:
             return []
 
         try:
-            parent_id = None if category_id == '0' else category_id
-            movies = self.jellyfin.get_movies(
-                self.jellyfin_user_id,
-                parent_id
-            )
+            if category_id and category_id != '0':
+                movies = self.jellyfin.get_movies(
+                    self.jellyfin_user_id, category_id
+                )
+            elif self.movie_library_filter is not None:
+                libraries = self.jellyfin.get_movie_libraries(
+                    self.jellyfin_user_id
+                )
+                allowed_ids = [
+                    lib['Id'] for lib in libraries
+                    if lib.get('Name', '').lower() in self.movie_library_filter
+                    or lib.get('Id', '') in self.movie_library_filter
+                ]
+                movies = []
+                for lib_id in allowed_ids:
+                    movies.extend(
+                        self.jellyfin.get_movies(self.jellyfin_user_id, lib_id)
+                    )
+            else:
+                movies = self.jellyfin.get_movies(self.jellyfin_user_id)
             
             streams = []
             for movie in movies:
@@ -390,11 +405,26 @@ class XtreamServer:
             return []
 
         try:
-            parent_id = None if category_id == '0' else category_id
-            series_list = self.jellyfin.get_series(
-                self.jellyfin_user_id,
-                parent_id
-            )
+            if category_id and category_id != '0':
+                series_list = self.jellyfin.get_series(
+                    self.jellyfin_user_id, category_id
+                )
+            elif self.series_library_filter is not None:
+                libraries = self.jellyfin.get_series_libraries(
+                    self.jellyfin_user_id
+                )
+                allowed_ids = [
+                    lib['Id'] for lib in libraries
+                    if lib.get('Name', '').lower() in self.series_library_filter
+                    or lib.get('Id', '') in self.series_library_filter
+                ]
+                series_list = []
+                for lib_id in allowed_ids:
+                    series_list.extend(
+                        self.jellyfin.get_series(self.jellyfin_user_id, lib_id)
+                    )
+            else:
+                series_list = self.jellyfin.get_series(self.jellyfin_user_id)
             
             series = []
             for show in series_list:
