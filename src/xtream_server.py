@@ -701,8 +701,14 @@ class XtreamServer:
         return 0
 
 
-# Initialize server
-server = XtreamServer()
+server: Optional[XtreamServer] = None
+
+
+def _get_server() -> XtreamServer:
+    global server
+    if server is None:
+        server = XtreamServer()
+    return server
 
 
 @app.route('/player_api.php', methods=['GET'])
@@ -719,39 +725,40 @@ def player_api():
     if not username or not password:
         return jsonify({'error': 'Missing credentials'}), 401
 
-    if not server.authenticate(username, password):
+    s = _get_server()
+    if not s.authenticate(username, password):
         return jsonify({'error': 'Invalid credentials'}), 401
 
     # Handle different actions
     if not action:
         # No action = server info / authentication response
-        return jsonify(server.get_server_info(username))
+        return jsonify(s.get_server_info(username))
 
     if action == 'get_vod_categories':
-        return jsonify(server.get_vod_categories())
+        return jsonify(s.get_vod_categories())
 
     if action == 'get_vod_streams':
         category_id = request.args.get('category_id')
-        return jsonify(server.get_vod_streams(category_id))
+        return jsonify(s.get_vod_streams(category_id))
 
     if action == 'get_vod_info':
         vod_id = request.args.get('vod_id')
         if not vod_id:
             return jsonify({'error': 'Missing vod_id'}), 400
-        return jsonify(server.get_vod_info(vod_id))
+        return jsonify(s.get_vod_info(vod_id))
 
     if action == 'get_series_categories':
-        return jsonify(server.get_series_categories())
+        return jsonify(s.get_series_categories())
 
     if action == 'get_series':
         category_id = request.args.get('category_id')
-        return jsonify(server.get_series(category_id))
+        return jsonify(s.get_series(category_id))
 
     if action == 'get_series_info':
         series_id = request.args.get('series_id')
         if not series_id:
             return jsonify({'error': 'Missing series_id'}), 400
-        return jsonify(server.get_series_info(series_id))
+        return jsonify(s.get_series_info(series_id))
 
     if action == 'get_live_categories':
         # Return empty list - live TV not supported but clients expect valid response
@@ -771,14 +778,15 @@ def stream_movie(username, password, stream_id, container):
     Redirects to Jellyfin stream URL.
     Uses HLS for m3u8 requests, direct streaming for other containers.
     """
-    if not server.authenticate(username, password):
+    s = _get_server()
+    if not s.authenticate(username, password):
         return jsonify({'error': 'Invalid credentials'}), 401
 
     # Use HLS streaming for m3u8 requests for better XC client compatibility
     if container == 'm3u8':
-        stream_url = server.jellyfin.get_hls_stream_url(stream_id)
+        stream_url = s.jellyfin.get_hls_stream_url(stream_id)
     else:
-        stream_url = server.jellyfin.get_stream_url(stream_id, container)
+        stream_url = s.jellyfin.get_stream_url(stream_id, container)
     return Response(status=302, headers={'Location': stream_url})
 
 
@@ -789,25 +797,27 @@ def stream_episode(username, password, stream_id, container):
     Redirects to Jellyfin stream URL.
     Uses HLS for m3u8 requests, direct streaming for other containers.
     """
-    if not server.authenticate(username, password):
+    s = _get_server()
+    if not s.authenticate(username, password):
         return jsonify({'error': 'Invalid credentials'}), 401
 
     # Use HLS streaming for m3u8 requests for better XC client compatibility
     if container == 'm3u8':
-        stream_url = server.jellyfin.get_hls_stream_url(stream_id)
+        stream_url = s.jellyfin.get_hls_stream_url(stream_id)
     else:
-        stream_url = server.jellyfin.get_stream_url(stream_id, container)
+        stream_url = s.jellyfin.get_stream_url(stream_id, container)
     return Response(status=302, headers={'Location': stream_url})
 
 
 def main():
     """Start the Xtream Codes server"""
-    host = server.config['xtream_server']['host']
-    port = server.config['xtream_server']['port']
-    
+    s = _get_server()
+    host = s.config['xtream_server']['host']
+    port = s.config['xtream_server']['port']
+
     logger.info(f"Starting Xtream Codes Server on {host}:{port}")
     logger.info("Jellyfin-Xtream Server is ready")
-    
+
     app.run(host=host, port=port, debug=False)
 
 
